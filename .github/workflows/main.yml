@@ -24,7 +24,7 @@ jobs:
       - name: Build Docker image
         run: |
           cd /home/octaloop/actions-runner/academicpages-folder/academicpages.github.io/academicpages.github.io  # Ensure we are in the right directory
-          docker build --no-cache -t academicpages-image ./home/octaloop/actions-runner/tws-portfolio  # Build the Docker image
+          docker build --no-cache -t academicpages-image .  # Build the Docker image
 
       - name: Check if the container is running, then stop and remove it
         run: |
