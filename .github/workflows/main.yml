@@ -1,0 +1,43 @@
+name: tws-portfolio
+
+on:
+  push:
+    branches:
+      - main  # Run the workflow on every push to the 'main' branch
+
+jobs:
+  build:
+    runs-on: self-hosted  # Use self-hosted runner
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '17'  # Replace with your desired Node.js version
+
+      - name: Set working directory
+        run: |
+          cd /home/octaloop/actions-runner/academicpages.github.io
+  # Set the correct working directory
+
+      - name: Build Docker image
+        run: |
+          cd /home/octaloop/actions-runner/academicpages.github.io
+  
+          docker build --no-cache -t academicpages-image .
+
+      - name: Check if the container is running, then stop and remove it
+        run: |
+          if docker ps -q --filter "name=tws-portfolio-container"; then
+            echo "Stopping and removing container academicpages-container..."
+            docker stop academicpages-container || true  # Stop the container if it's running
+            docker rm academicpages-container || true  # Remove the container if it's stopped
+          else
+            echo "Container academicpages-container is not running. Skipping stop and remove."
+          fi
+
+      - name: Run Docker container
+        run: |
+          docker run -d -p 3000:3000 --name academicpages-container academicpages-image  # Run the container on port 3000
