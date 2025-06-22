@@ -2,7 +2,7 @@ name: tws-portfolio
 
 on:
   push:
-    branches:
+    branches
       - master  # Run the workflow on every push to the 'main' branch
 
 jobs:
